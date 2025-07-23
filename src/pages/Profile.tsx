@@ -140,14 +140,14 @@ const Profile = () => {
                 <Label className="text-sm font-semibold text-foreground">Age *</Label>
                 <Input 
                   type="number"
-                  placeholder="21-35"
-                  min="21"
-                  max="35"
+                  placeholder="18-45"
+                  min="18 "
+                  max="45"
                   value={formData.age}
                   onChange={(e) => setFormData({...formData, age: e.target.value})}
                   className="rounded-[16px] border-2 border-primary/20 focus:border-primary mt-2"
                 />
-                <p className="text-xs text-muted-foreground mt-1">Age range: 21-35 years</p>
+                <p className="text-xs text-muted-foreground mt-1">Age range: 18-45 years</p>
               </div>
 
               {/* Current Location */}
