@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Mic, MicOff, ArrowRight, Bot, MessageCircle } from "lucide-react";
+import VoiceAI from "@/components/VoiceAI";
 
 const Survey = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -100,13 +101,13 @@ const Survey = () => {
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 bg-white/50 rounded-full px-4 py-2 mb-4">
             <Bot className="w-5 h-5 text-primary" />
-            <span className="text-sm font-semibold text-foreground">Step 2 of 3</span>
+            <span className="text-sm font-semibold text-foreground">Step 4 of 4</span>
           </div>
           <h1 className="text-3xl font-display font-bold text-foreground mb-2">
             AI Compatibility Survey
           </h1>
           <p className="text-muted-foreground">
-            Answer 5 quick questions so our AI can find your perfect match
+            Voice-enabled survey powered by Omnidimensions AI
           </p>
           
           {/* Progress Bar */}
@@ -133,36 +134,12 @@ const Survey = () => {
               {questions[currentQuestion].question}
             </h2>
             
-            {/* Voice Input UI */}
-            <div className="glass-card rounded-[20px] p-4 mb-6">
-              <div className="flex items-center justify-center gap-4">
-                <MessageCircle className="w-5 h-5 text-primary" />
-                <span className="text-sm font-medium text-foreground">
-                  Speak your answer or select below
-                </span>
-                <Button
-                  onClick={toggleListening}
-                  variant={isListening ? "default" : "outline"}
-                  size="sm"
-                  className="rounded-full"
-                >
-                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                </Button>
-              </div>
-              
-              {/* Waveform Animation */}
-              {isListening && (
-                <div className="flex justify-center mt-4">
-                  <div className="waveform">
-                    <div className="waveform-bar"></div>
-                    <div className="waveform-bar"></div>
-                    <div className="waveform-bar"></div>
-                    <div className="waveform-bar"></div>
-                    <div className="waveform-bar"></div>
-                  </div>
-                </div>
-              )}
-            </div>
+            {/* Enhanced Voice AI Integration */}
+            <VoiceAI 
+              greeting={`Question ${currentQuestion + 1}: ${questions[currentQuestion].question}`}
+              context="survey"
+              className="mb-6"
+            />
           </div>
 
           {/* Answer Options */}

@@ -6,7 +6,8 @@ import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Shield, User, Briefcase, Heart, Camera } from "lucide-react";
+import { ArrowRight, Shield, User, Briefcase, Heart, Camera, CheckCircle, MapPin, Upload } from "lucide-react";
+import VoiceAI from "@/components/VoiceAI";
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -15,13 +16,30 @@ const Profile = () => {
     gender: "female",
     maritalStatus: "",
     workStatus: "",
-    governmentId: false
+    location: "",
+    occupation: "",
+    profilePhoto: null as File | null,
+    governmentId: true // Already verified from login
   });
+  const [isListening, setIsListening] = useState(false);
+  const [showVoiceAI, setShowVoiceAI] = useState(true);
   const navigate = useNavigate();
 
   const handleNext = () => {
-    if (formData.fullName && formData.age && formData.maritalStatus && formData.workStatus) {
-      navigate("/survey");
+    if (formData.fullName && formData.age && formData.maritalStatus && formData.workStatus && formData.location) {
+      navigate("/path-selection");
+    }
+  };
+
+  const handleVoiceResponse = (response: string) => {
+    // Process voice input and update form data
+    console.log("Voice response:", response);
+  };
+
+  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setFormData({...formData, profilePhoto: file});
     }
   };
 
@@ -36,52 +54,142 @@ const Profile = () => {
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 bg-white/50 rounded-full px-4 py-2 mb-4">
             <User className="w-5 h-5 text-primary" />
-            <span className="text-sm font-semibold text-foreground">Step 1 of 3</span>
+            <span className="text-sm font-semibold text-foreground">Step 2 of 4</span>
           </div>
           <h1 className="text-3xl font-display font-bold text-foreground mb-2">
-            Tell Us About You
+            AI-Powered Profile Creation
           </h1>
           <p className="text-muted-foreground">
-            Our AI needs some basic info to find your perfect roommate match
+            Let our Omnidimensions AI help you create the perfect profile
           </p>
+          <div className="flex justify-center gap-2 mt-3">
+            <Badge className="verification-badge">
+              <CheckCircle className="w-3 h-3 mr-1" />
+              ID Verified
+            </Badge>
+            <Badge className="verification-badge">
+              <Shield className="w-3 h-3 mr-1" />
+              Secure
+            </Badge>
+          </div>
         </div>
 
+        {/* Voice AI Assistant */}
+        {showVoiceAI && (
+          <div className="mb-8">
+            <VoiceAI 
+              onResponse={handleVoiceResponse}
+              isListening={isListening}
+              onToggleListening={() => setIsListening(!isListening)}
+              greeting="Welcome! I'm here to help you create your profile. I can fill in information as you speak naturally."
+              context="profile-creation"
+            />
+          </div>
+        )}
+
         {/* Profile Form */}
-        <Card className="brutal-card max-w-lg mx-auto p-8">
+        <Card className="brutal-card max-w-2xl mx-auto p-8">
           <div className="space-y-6">
-            {/* Full Name */}
-            <div>
-              <Label className="text-sm font-semibold text-foreground">Full Name *</Label>
-              <Input 
-                placeholder="Enter your full name"
-                value={formData.fullName}
-                onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                className="rounded-[16px] border-2 border-primary/20 focus:border-primary mt-2"
-              />
+            {/* Profile Photo Upload */}
+            <div className="text-center">
+              <Label className="text-sm font-semibold text-foreground">Profile Photo</Label>
+              <div className="photo-upload mt-3">
+                <div className="w-24 h-24 rounded-full border-2 border-dashed border-primary mx-auto mb-4 flex items-center justify-center overflow-hidden">
+                  {formData.profilePhoto ? (
+                    <img 
+                      src={URL.createObjectURL(formData.profilePhoto)} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  ) : (
+                    <Camera className="w-8 h-8 text-primary" />
+                  )}
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                  id="photo-upload"
+                />
+                <label 
+                  htmlFor="photo-upload"
+                  className="btn-primary inline-flex items-center gap-2 cursor-pointer px-4 py-2 text-sm"
+                >
+                  <Upload className="w-4 h-4" />
+                  Upload Photo
+                </label>
+              </div>
             </div>
 
-            {/* Age */}
-            <div>
-              <Label className="text-sm font-semibold text-foreground">Age *</Label>
-              <Input 
-                type="number"
-                placeholder="Your age"
-                value={formData.age}
-                onChange={(e) => setFormData({...formData, age: e.target.value})}
-                className="rounded-[16px] border-2 border-primary/20 focus:border-primary mt-2"
-              />
+            {/* Two-column layout for form fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Full Name */}
+              <div>
+                <Label className="text-sm font-semibold text-foreground">Full Name *</Label>
+                <Input 
+                  placeholder="Enter your full name"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                  className="rounded-[16px] border-2 border-primary/20 focus:border-primary mt-2"
+                />
+              </div>
+
+              {/* Age */}
+              <div>
+                <Label className="text-sm font-semibold text-foreground">Age *</Label>
+                <Input 
+                  type="number"
+                  placeholder="21-35"
+                  min="21"
+                  max="35"
+                  value={formData.age}
+                  onChange={(e) => setFormData({...formData, age: e.target.value})}
+                  className="rounded-[16px] border-2 border-primary/20 focus:border-primary mt-2"
+                />
+                <p className="text-xs text-muted-foreground mt-1">Age range: 21-35 years</p>
+              </div>
+
+              {/* Current Location */}
+              <div>
+                <Label className="text-sm font-semibold text-foreground">Current Location *</Label>
+                <Input 
+                  placeholder="City, State"
+                  value={formData.location}
+                  onChange={(e) => setFormData({...formData, location: e.target.value})}
+                  className="rounded-[16px] border-2 border-primary/20 focus:border-primary mt-2"
+                />
+              </div>
+
+              {/* Occupation */}
+              <div>
+                <Label className="text-sm font-semibold text-foreground">Occupation</Label>
+                <Input 
+                  placeholder="Your job title or field"
+                  value={formData.occupation}
+                  onChange={(e) => setFormData({...formData, occupation: e.target.value})}
+                  className="rounded-[16px] border-2 border-primary/20 focus:border-primary mt-2"
+                />
+              </div>
             </div>
 
-            {/* Gender */}
-            <div>
-              <Label className="text-sm font-semibold text-foreground">Gender</Label>
-              <div className="mt-3">
-                <Badge className="bg-primary/10 text-primary border-primary/20">
-                  Women Only 👩‍🤝‍👩
-                </Badge>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Roomee RM2 currently serves women-only accommodations for safety and comfort
-                </p>
+            {/* Gender - Women Only Section */}
+            <div className="col-span-full">
+              <Label className="text-sm font-semibold text-foreground">Platform Focus</Label>
+              <div className="glass-card rounded-[16px] p-4 mt-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                    <span className="text-xl">👩‍🤝‍👩</span>
+                  </div>
+                  <div className="flex-1">
+                    <Badge className="bg-primary/10 text-primary border-primary/20 mb-2">
+                      Women-Only Platform
+                    </Badge>
+                    <p className="text-xs text-muted-foreground">
+                      Roomee RM2 exclusively serves women for enhanced safety, security, and comfort in shared living spaces.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -161,14 +269,23 @@ const Profile = () => {
             </div>
           </div>
 
-          <Button 
-            onClick={handleNext}
-            disabled={!formData.fullName || !formData.age || !formData.maritalStatus || !formData.workStatus}
-            className="btn-primary w-full mt-8 flex items-center justify-center gap-2"
-          >
-            Continue to AI Survey
-            <ArrowRight className="w-4 h-4" />
-          </Button>
+          <div className="flex gap-4 mt-8">
+            <Button 
+              variant="outline"
+              onClick={() => setShowVoiceAI(!showVoiceAI)}
+              className="border-2 border-primary/20 rounded-[12px]"
+            >
+              {showVoiceAI ? "Hide AI Assistant" : "Show AI Assistant"}
+            </Button>
+            <Button 
+              onClick={handleNext}
+              disabled={!formData.fullName || !formData.age || !formData.maritalStatus || !formData.workStatus || !formData.location}
+              className="btn-primary flex-1 flex items-center justify-center gap-2 btn-spring"
+            >
+              Continue to Path Selection
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
         </Card>
       </div>
     </div>

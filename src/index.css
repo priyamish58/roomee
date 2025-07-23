@@ -8,37 +8,39 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Pink 'Pookie' Color Palette */
-    --background: 345 100% 97%; /* #FDE8F1 equivalent */
+    /* Professional "Pookie" Aesthetic - Sophisticated Color Palette */
+    --background: 26 50% 97%; /* Champagne Cream: #F9F4F0 */
     --foreground: 320 25% 15%;
 
-    --card: 0 0% 100%;
+    --card: 0 0% 100%; /* Pearl White: #FEFEFE */
     --card-foreground: 320 25% 15%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 320 25% 15%;
 
-    /* Primary pink tones */
-    --primary: 320 100% 85%; /* #FFB3DA equivalent */
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 325 100% 90%;
-    --primary-soft: 345 100% 95%;
+    /* Sage Rose Primary */
+    --primary: 320 35% 85%; /* Sage Rose: #F2D8E6 */
+    --primary-foreground: 320 25% 15%;
+    --primary-glow: 265 45% 90%; /* Lavender Mist: #E8E2F7 */
+    --primary-soft: 26 50% 97%; /* Champagne Cream */
 
-    --secondary: 340 50% 95%;
+    /* Terracotta Blush Secondary */
+    --secondary: 15 45% 75%; /* Terracotta Blush: #E5B8A3 */
     --secondary-foreground: 320 25% 15%;
 
-    --muted: 345 30% 96%;
+    --muted: 26 50% 94%;
     --muted-foreground: 320 15% 45%;
 
-    --accent: 320 100% 85%;
-    --accent-foreground: 0 0% 100%;
+    /* Eucalyptus Accent */
+    --accent: 85 25% 70%; /* Eucalyptus: #C8D5B9 */
+    --accent-foreground: 320 25% 15%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 340 30% 90%;
-    --input: 340 30% 95%;
-    --ring: 320 100% 85%;
+    --border: 320 20% 85%;
+    --input: 26 50% 95%;
+    --ring: 320 35% 85%;
 
     /* Neo-brutalist radius */
     --radius: 1.5rem; /* 24px rounded corners */
@@ -235,4 +237,134 @@ All colors MUST be HSL.
   .progress-ring-fill {
     transition: stroke-dashoffset 0.5s ease-in-out;
   }
+
+  /* Government verification styles */
+  .verification-badge {
+    @apply bg-accent/20 text-accent-foreground border border-accent rounded-full px-3 py-1 text-xs font-semibold;
+    backdrop-filter: blur(8px);
+  }
+
+  .security-indicator {
+    @apply flex items-center gap-2 bg-accent/10 rounded-lg px-3 py-2 border border-accent/30;
+  }
+
+  /* Voice AI interaction styles */
+  .voice-active {
+    @apply bg-primary/20 border-primary;
+    animation: pulse-voice 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-voice {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4); }
+    50% { box-shadow: 0 0 0 20px hsl(var(--primary) / 0); }
+  }
+
+  /* Confetti burst animation */
+  .confetti-burst {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .confetti-burst::after {
+    content: '🎉✨🎊';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: confetti 1s ease-out forwards;
+    opacity: 0;
+  }
+
+  @keyframes confetti {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+  }
+
+  /* Liquid swipe effect */
+  .liquid-swipe {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .liquid-swipe::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent);
+    transition: left 0.6s ease-in-out;
+  }
+
+  .liquid-swipe:hover::before {
+    left: 100%;
+  }
+
+  /* Springy button animations */
+  .btn-spring {
+    transition: var(--transition-spring);
+  }
+
+  .btn-spring:hover {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  .btn-spring:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  /* Photo upload area */
+  .photo-upload {
+    @apply border-2 border-dashed border-primary/30 rounded-[20px] p-8 text-center;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    transition: var(--transition-smooth);
+  }
+
+  .photo-upload:hover {
+    @apply border-primary;
+    background: hsl(var(--primary) / 0.05);
+  }
+
+  /* Path selection cards */
+  .path-card {
+    @apply p-6 rounded-[24px] border-2 cursor-pointer;
+    background: var(--gradient-card);
+    border-color: var(--border);
+    transition: var(--transition-spring);
+  }
+
+  .path-card:hover {
+    @apply border-primary;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .path-card.selected {
+    @apply border-primary;
+    background: hsl(var(--primary) / 0.1);
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Compatibility score animations */
+  .compatibility-score {
+    position: relative;
+  }
+
+  .compatibility-score::after {
+    content: attr(data-score) '%';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    color: hsl(var(--primary));
+  }
+
+  /* Animation delays for staggered effects */
+  .animation-delay-1000 { animation-delay: 1s; }
+  .animation-delay-1500 { animation-delay: 1.5s; }
+  .animation-delay-2000 { animation-delay: 2s; }
 }
