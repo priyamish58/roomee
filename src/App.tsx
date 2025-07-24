@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import PathSelection from "./pages/PathSelection";
 import Survey from "./pages/Survey";
 import Matches from "./pages/Matches";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
