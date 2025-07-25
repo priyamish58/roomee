@@ -8,39 +8,39 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Professional "Pookie" Aesthetic - Sophisticated Color Palette */
-    --background: 26 50% 97%; /* Champagne Cream: #F9F4F0 */
+    /* Professional "Pookie" Aesthetic - Sophisticated Color Palette (Darker) */
+    --background: 26 50% 85%; /* Darker Champagne Cream */
     --foreground: 320 25% 15%;
 
-    --card: 0 0% 100%; /* Pearl White: #FEFEFE */
+    --card: 0 0% 88%; /* Darker Pearl White */
     --card-foreground: 320 25% 15%;
 
-    --popover: 0 0% 100%;
+    --popover: 0 0% 88%;
     --popover-foreground: 320 25% 15%;
 
     /* Sage Rose Primary */
-    --primary: 320 35% 85%; /* Sage Rose: #F2D8E6 */
+    --primary: 320 35% 70%; /* Darker Sage Rose */
     --primary-foreground: 320 25% 15%;
-    --primary-glow: 265 45% 90%; /* Lavender Mist: #E8E2F7 */
-    --primary-soft: 26 50% 97%; /* Champagne Cream */
+    --primary-glow: 265 45% 75%; /* Darker Lavender Mist */
+    --primary-soft: 26 50% 82%; /* Darker Champagne Cream */
 
     /* Terracotta Blush Secondary */
-    --secondary: 15 45% 75%; /* Terracotta Blush: #E5B8A3 */
+    --secondary: 15 45% 60%; /* Darker Terracotta Blush */
     --secondary-foreground: 320 25% 15%;
 
-    --muted: 26 50% 94%;
+    --muted: 26 50% 79%;
     --muted-foreground: 320 15% 45%;
 
     /* Eucalyptus Accent */
-    --accent: 85 25% 70%; /* Eucalyptus: #C8D5B9 */
+    --accent: 85 25% 55%; /* Darker Eucalyptus */
     --accent-foreground: 320 25% 15%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 320 20% 85%;
-    --input: 26 50% 95%;
-    --ring: 320 35% 85%;
+    --border: 320 20% 70%;
+    --input: 26 50% 80%;
+    --ring: 320 35% 70%;
 
     /* Neo-brutalist radius */
     --radius: 1.5rem; /* 24px rounded corners */
