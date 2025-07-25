@@ -93,8 +93,8 @@ const Survey = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-glow relative overflow-hidden">
       {/* Floating decorations */}
-      <div className="floating-hearts top-20 left-10">🤖</div>
-      <div className="floating-hearts top-40 right-20 animation-delay-1000">💬</div>
+      <div className="floating-particles top-20 left-10">🤖</div>
+      <div className="floating-particles top-40 right-20 animation-delay-1000">💬</div>
       
       <div className="container mx-auto px-4 py-8 relative z-10">
         {/* Header */}

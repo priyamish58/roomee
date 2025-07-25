@@ -46,8 +46,8 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-glow relative overflow-hidden">
       {/* Floating decorations */}
-      <div className="floating-hearts top-16 right-10">✨</div>
-      <div className="floating-hearts top-32 left-20 animation-delay-1500">💫</div>
+      <div className="floating-particles top-16 right-10">✨</div>
+      <div className="floating-particles top-32 left-20 animation-delay-1500">💫</div>
       
       <div className="container mx-auto px-4 py-8 relative z-10">
         {/* Header */}
@@ -186,7 +186,7 @@ const Profile = () => {
                       Women-Only Platform
                     </Badge>
                     <p className="text-xs text-muted-foreground">
-                      Roomee RM2 exclusively serves women for enhanced safety, security, and comfort in shared living spaces.
+                      Roomee exclusively serves women for enhanced safety, security, and comfort in shared living spaces.
                     </p>
                   </div>
                 </div>
@@ -204,14 +204,14 @@ const Profile = () => {
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="single" id="single" />
                   <Label htmlFor="single" className="flex items-center gap-2">
-                    <Heart className="w-4 h-4 text-primary" />
+                    <User className="w-4 h-4 text-primary" />
                     Single
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="married" id="married" />
                   <Label htmlFor="married" className="flex items-center gap-2">
-                    <Heart className="w-4 h-4 text-primary" />
+                    <User className="w-4 h-4 text-primary" />
                     Married/In Relationship
                   </Label>
                 </div>

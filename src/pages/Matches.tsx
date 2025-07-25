@@ -60,15 +60,15 @@ const Matches = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-glow relative overflow-hidden">
       {/* Floating decorations */}
-      <div className="floating-hearts top-16 right-10">🎉</div>
-      <div className="floating-hearts top-32 left-20 animation-delay-1000">✨</div>
-      <div className="floating-hearts top-48 right-1/4 animation-delay-2000">💕</div>
+      <div className="floating-particles top-16 right-10">🎉</div>
+      <div className="floating-particles top-32 left-20 animation-delay-1000">✨</div>
+      <div className="floating-particles top-48 right-1/4 animation-delay-2000">🌟</div>
       
       <div className="container mx-auto px-4 py-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 bg-white/50 rounded-full px-4 py-2 mb-4">
-            <Heart className="w-5 h-5 text-primary" />
+            <Star className="w-5 h-5 text-primary" />
             <span className="text-sm font-semibold text-foreground">Step 3 of 3</span>
           </div>
           <h1 className="text-3xl font-display font-bold text-foreground mb-2">
@@ -178,7 +178,7 @@ const Matches = () => {
                 Chat Now
               </Button>
               <Button variant="outline" className="border-2 border-primary/20 rounded-[12px] px-6">
-                <Heart className="w-4 h-4" />
+                <Star className="w-4 h-4" />
               </Button>
             </div>
           </Card>

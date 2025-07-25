@@ -14,19 +14,19 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-glow relative overflow-hidden">
       {/* Floating decorations */}
-      <div className="floating-hearts top-20 left-10">💕</div>
-      <div className="floating-hearts top-40 right-20 animation-delay-1000">✨</div>
-      <div className="floating-hearts top-60 left-1/4 animation-delay-2000">💖</div>
-      <div className="floating-hearts bottom-32 right-1/3 animation-delay-3000">🎉</div>
+      <div className="floating-particles top-20 left-10">✨</div>
+      <div className="floating-particles top-40 right-20 animation-delay-1000">🌟</div>
+      <div className="floating-particles top-60 left-1/4 animation-delay-2000">💫</div>
+      <div className="floating-particles bottom-32 right-1/3 animation-delay-3000">🎉</div>
       
       <div className="container mx-auto px-4 py-12 relative z-10">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-3 bg-white/50 rounded-full px-6 py-3 mb-8">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center">
+          <div className="inline-flex items-center gap-3 bg-white/50 rounded-full px-6 py-3 mb-8 logo-bounce">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center logo-glow">
               <Users className="w-4 h-4 text-white" />
             </div>
-            <span className="font-display font-bold text-xl text-foreground">Roomee RM2</span>
+            <span className="font-display font-bold text-xl text-foreground logo-shimmer">Roomee</span>
           </div>
           
           <h1 className="text-5xl md:text-6xl font-display font-bold text-foreground mb-6 leading-tight">

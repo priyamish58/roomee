@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Shield, Users, Camera, CheckCircle, AlertTriangle, FileText, User, Lock } from "lucide-react";
+import { Heart, Shield, Users, Camera, CheckCircle, AlertTriangle, FileText, User, Lock, Sparkles } from "lucide-react";
 import heroImage from "@/assets/hero-roommates.jpg";
 
 const Login = () => {
@@ -192,9 +192,9 @@ const Login = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-glow relative overflow-hidden">
         {/* Floating decorations */}
-        <div className="floating-hearts top-20 left-10">🔐</div>
-        <div className="floating-hearts top-40 right-20 animation-delay-1000">🛡️</div>
-        <div className="floating-hearts top-60 left-1/4 animation-delay-2000">✅</div>
+        <div className="floating-particles top-20 left-10">🔐</div>
+        <div className="floating-particles top-40 right-20 animation-delay-1000">🛡️</div>
+        <div className="floating-particles top-60 left-1/4 animation-delay-2000">✅</div>
         
         <div className="container mx-auto px-4 py-8 relative z-10">
           {/* Header */}
@@ -220,20 +220,20 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-glow relative overflow-hidden">
-      {/* Floating hearts decoration */}
-      <div className="floating-hearts top-20 left-10">💕</div>
-      <div className="floating-hearts top-40 right-20 animation-delay-1000">💖</div>
-      <div className="floating-hearts top-60 left-1/4 animation-delay-2000">💝</div>
+      {/* Floating decorations */}
+      <div className="floating-particles top-20 left-10">✨</div>
+      <div className="floating-particles top-40 right-20 animation-delay-1000">🌟</div>
+      <div className="floating-particles top-60 left-1/4 animation-delay-2000">💫</div>
       
       <div className="container mx-auto px-4 py-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center">
+          <div className="flex items-center justify-center gap-2 mb-4 logo-bounce">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center logo-glow">
               <Users className="w-6 h-6 text-primary-foreground" />
             </div>
-            <h1 className="text-3xl font-display font-bold text-foreground">
-              Roomee RM2
+            <h1 className="text-3xl font-display font-bold text-foreground logo-shimmer">
+              Roomee
             </h1>
           </div>
           <p className="text-muted-foreground font-medium">
@@ -245,7 +245,7 @@ const Login = () => {
               Government Verified
             </Badge>
             <Badge className="verification-badge">
-              <Heart className="w-3 h-3 mr-1" />
+              <Shield className="w-3 h-3 mr-1" />
               Women Only
             </Badge>
           </div>
@@ -303,7 +303,7 @@ const Login = () => {
             >
               {isLogin ? (
                 <>
-                  <Heart className="w-4 h-4" />
+                  <Users className="w-4 h-4" />
                   Sign In
                 </>
               ) : (
@@ -330,7 +330,7 @@ const Login = () => {
           {/* Features preview */}
           <div className="grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-border">
             <div className="text-center">
-              <Heart className="w-6 h-6 text-primary mx-auto mb-2" />
+              <Sparkles className="w-6 h-6 text-primary mx-auto mb-2" />
               <p className="text-xs text-muted-foreground font-medium">Smart Matching</p>
             </div>
             <div className="text-center">
