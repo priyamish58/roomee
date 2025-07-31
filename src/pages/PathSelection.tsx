@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Home, Search, Users, MapPin } from "lucide-react";
-import VoiceAI from "@/components/VoiceAI";
 
 const PathSelection = () => {
+  const [user, loading] = useAuthState(auth);
   const [selectedPath, setSelectedPath] = useState<"need-room" | "have-room" | null>(null);
-  const [showVoiceAI, setShowVoiceAI] = useState(true);
   const navigate = useNavigate();
+
+  // Redirect if not authenticated
+  if (!loading && !user) {
+    navigate("/login");
+    return null;
+  }
 
   const handlePathSelect = (path: "need-room" | "have-room") => {
     setSelectedPath(path);
@@ -22,6 +29,17 @@ const PathSelection = () => {
       navigate("/room-documentation");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-glow flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-glow relative overflow-hidden">
@@ -40,19 +58,9 @@ const PathSelection = () => {
             Smart Path Selection
           </h1>
           <p className="text-muted-foreground">
-            Tell our AI what you're looking for so we can personalize your experience
+            Choose your path to find the perfect roommate match
           </p>
         </div>
-
-        {/* Voice AI Assistant */}
-        {showVoiceAI && (
-          <div className="mb-8">
-            <VoiceAI 
-              greeting="I'll help you choose the right path. Are you looking for a room to rent, or do you have a room to share?"
-              context="path-selection"
-            />
-          </div>
-        )}
 
         {/* Path Selection Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
