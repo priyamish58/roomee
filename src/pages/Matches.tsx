@@ -1,61 +1,110 @@
 import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/lib/auth";
+import { db, findBestMatch, MatchResult } from "@/lib/database";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Star, MapPin, Briefcase, Calendar, Home } from "lucide-react";
 import twinRoomImage from "@/assets/twin-room-mockup.jpg";
+import { toast } from "@/components/ui/sonner";
 
 const Matches = () => {
-  const [selectedMatch, setSelectedMatch] = useState(0);
+  const [user, loading] = useAuthState(auth);
+  const [matchResult, setMatchResult] = useState<MatchResult | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [noMatches, setNoMatches] = useState(false);
+  const navigate = useNavigate();
 
-  const matches = [
-    {
-      id: 1,
-      name: "Sarah Chen",
-      age: 24,
-      profession: "Software Engineer",
-      location: "Downtown District",
-      matchScore: 95,
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-      interests: ["Reading", "Yoga", "Cooking", "Netflix"],
-      lifestyle: "Early bird, clean, social",
-      bio: "Looking for a reliable roommate who loves a tidy space and occasional movie nights!"
-    },
-    {
-      id: 2,
-      name: "Priya Sharma",
-      age: 22,
-      profession: "Medical Student",
-      location: "University Area",
-      matchScore: 89,
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-      interests: ["Study groups", "Plants", "Coffee", "Fitness"],
-      lifestyle: "Focused, quiet, organized",
-      bio: "Med student seeking a study-friendly roommate who appreciates a peaceful environment."
-    },
-    {
-      id: 3,
-      name: "Emma Rodriguez",
-      age: 26,
-      profession: "Marketing Manager",
-      location: "Business District",
-      matchScore: 87,
-      avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face",
-      interests: ["Travel", "Photography", "Wine", "Art"],
-      lifestyle: "Social, adventurous, clean",
-      bio: "Creative professional who loves hosting small gatherings and exploring the city!"
-    }
-  ];
+  // Redirect if not authenticated
+  if (!loading && !user) {
+    navigate("/login");
+    return null;
+  }
 
-  const getMatchColor = (score: number) => {
+  useEffect(() => {
+    const findMatches = async () => {
+      if (!user) return;
+      
+      setIsLoading(true);
+      try {
+        const result = await findBestMatch(user.uid);
+        if (result) {
+          setMatchResult(result);
+          toast.success("Perfect match found!");
+        } else {
+          setNoMatches(true);
+          toast.info("No roommate matches available at this time. Please check back later.");
+        }
+      } catch (error: any) {
+        console.error('Match finding failed:', error);
+        toast.error("Failed to find matches. Please try again.");
+        setNoMatches(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    findMatches();
+  }, [user]);
+
+  const getMatchColor = (score: number): string => {
     if (score >= 90) return "text-green-600";
     if (score >= 80) return "text-yellow-600";
     return "text-orange-600";
   };
 
+  if (loading || isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-glow flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Finding your perfect roommate match...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (noMatches || !matchResult) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-glow relative overflow-hidden">
+        <div className="container mx-auto px-4 py-8 relative z-10">
+          <div className="text-center max-w-2xl mx-auto">
+            <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6">
+              <Star className="w-12 h-12 text-primary" />
+            </div>
+            <h1 className="text-3xl font-display font-bold text-foreground mb-4">
+              No Matches Available
+            </h1>
+            <p className="text-muted-foreground mb-8">
+              No roommate matches are available at this time. Please check back later as more users join our platform.
+            </p>
+            <div className="flex gap-4 justify-center">
+              <Button 
+                onClick={() => navigate("/profile")}
+                variant="outline"
+                className="border-2 border-primary/20 rounded-[12px]"
+              >
+                Update Profile
+              </Button>
+              <Button 
+                onClick={() => window.location.reload()}
+                className="btn-primary"
+              >
+                Check Again
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const circumference = 2 * Math.PI * 45;
-  const offset = circumference - (matches[selectedMatch].matchScore / 100) * circumference;
+  const offset = circumference - (matchResult.matchScore / 100) * circumference;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-glow relative overflow-hidden">
@@ -75,11 +124,11 @@ const Matches = () => {
             Your Perfect Matches! 
           </h1>
           <p className="text-muted-foreground">
-            Our AI found {matches.length} amazing roommates that match your preferences
+            Our AI found your perfect roommate match!
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Match Details */}
           <Card className="brutal-card p-8">
             <div className="text-center mb-6">
@@ -108,8 +157,8 @@ const Matches = () => {
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <div className={`text-2xl font-bold ${getMatchColor(matches[selectedMatch].matchScore)}`}>
-                      {matches[selectedMatch].matchScore}%
+                    <div className={`text-2xl font-bold ${getMatchColor(matchResult.matchScore)}`}>
+                      {matchResult.matchScore}%
                     </div>
                     <div className="text-xs text-muted-foreground">Match</div>
                   </div>
@@ -118,56 +167,38 @@ const Matches = () => {
               </div>
 
               <Avatar className="w-20 h-20 mx-auto mb-4 border-4 border-primary/20">
-                <AvatarImage src={matches[selectedMatch].avatar} alt={matches[selectedMatch].name} />
+                <AvatarImage src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face" alt={matchResult.roommateName} />
                 <AvatarFallback className="bg-primary text-white text-lg font-semibold">
-                  {matches[selectedMatch].name.split(' ').map(n => n[0]).join('')}
+                  {matchResult.roommateName.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
 
               <h2 className="text-2xl font-display font-bold text-foreground">
-                {matches[selectedMatch].name}
+                {matchResult.roommateName}
               </h2>
-              <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground mt-2">
-                <span className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" />
-                  {matches[selectedMatch].age} years
-                </span>
-                <span className="flex items-center gap-1">
-                  <Briefcase className="w-4 h-4" />
-                  {matches[selectedMatch].profession}
-                </span>
-              </div>
-              <div className="flex items-center justify-center gap-1 text-sm text-muted-foreground mt-1">
-                <MapPin className="w-4 h-4" />
-                {matches[selectedMatch].location}
-              </div>
             </div>
 
             {/* Bio */}
             <div className="glass-card rounded-[20px] p-4 mb-6">
               <p className="text-sm text-foreground text-center">
-                "{matches[selectedMatch].bio}"
+                "{matchResult.explanation}"
               </p>
             </div>
 
-            {/* Details */}
+            {/* Room Details */}
             <div className="space-y-4">
               <div>
-                <h3 className="font-semibold text-foreground mb-2">Lifestyle</h3>
-                <Badge className="bg-primary/10 text-primary border-primary/20">
-                  {matches[selectedMatch].lifestyle}
+                <h3 className="font-semibold text-foreground mb-2">Suggested Room</h3>
+                <Badge className="bg-secondary/10 text-secondary border-secondary/20">
+                  {matchResult.suggestedRoom.name} - {matchResult.suggestedRoom.side} side
                 </Badge>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">Interests</h3>
-                <div className="flex flex-wrap gap-2">
-                  {matches[selectedMatch].interests.map((interest, index) => (
-                    <Badge key={index} variant="outline" className="border-primary/20 text-primary">
-                      {interest}
-                    </Badge>
-                  ))}
-                </div>
+                <h3 className="font-semibold text-foreground mb-2">Match Score</h3>
+                <Badge className={`${getMatchColor(matchResult.matchScore)} border-current`}>
+                  {matchResult.matchScore}% Compatible
+                </Badge>
               </div>
             </div>
 
@@ -202,37 +233,28 @@ const Matches = () => {
             </Card>
 
             {/* Other Matches */}
-            <Card className="brutal-card p-6">
+            <Card className="glass-card p-6">
               <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Star className="w-5 h-5 text-primary" />
-                Other Great Matches
+                <Shield className="w-5 h-5 text-primary" />
+                Security Features
               </h3>
-              <div className="space-y-3">
-                {matches.map((match, index) => (
-                  <div 
-                    key={match.id}
-                    onClick={() => setSelectedMatch(index)}
-                    className={`flex items-center gap-3 p-3 rounded-[12px] cursor-pointer transition-all ${
-                      selectedMatch === index 
-                        ? 'bg-primary/10 border-2 border-primary/20' 
-                        : 'hover:bg-primary/5 border-2 border-transparent'
-                    }`}
-                  >
-                    <Avatar className="w-10 h-10">
-                      <AvatarImage src={match.avatar} alt={match.name} />
-                      <AvatarFallback className="bg-primary text-white text-sm">
-                        {match.name.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="font-medium text-sm text-foreground">{match.name}</div>
-                      <div className="text-xs text-muted-foreground">{match.profession}</div>
-                    </div>
-                    <div className={`text-sm font-bold ${getMatchColor(match.matchScore)}`}>
-                      {match.matchScore}%
-                    </div>
-                  </div>
-                ))}
+              <div className="space-y-3 text-sm">
+                <div className="security-indicator">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Government ID Verified</span>
+                </div>
+                <div className="security-indicator">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Gmail Account Verified</span>
+                </div>
+                <div className="security-indicator">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Women-Only Platform</span>
+                </div>
+                <div className="security-indicator">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>AI-Powered Matching</span>
+                </div>
               </div>
             </Card>
           </div>
